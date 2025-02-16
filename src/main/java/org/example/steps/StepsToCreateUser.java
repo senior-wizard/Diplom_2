@@ -10,6 +10,8 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class StepsToCreateUser {
 
+    static String createUserURL = "/api/auth/register";
+
     @Step("Создание пользователя")
     public static Response createNewUser(String email, String password, String name) {
         BodyOfCreateUser bodyOfCreateUser = new BodyOfCreateUser(email, password, name);
@@ -17,7 +19,7 @@ public class StepsToCreateUser {
                 .contentType(ContentType.JSON)
                 .body(bodyOfCreateUser)
                 .when()
-                .post("/api/auth/register");
+                .post(createUserURL);
     }
 
     @Step("Проверка, что 'success' равен true в ответе при создании нового пользователя")
@@ -25,7 +27,7 @@ public class StepsToCreateUser {
         response.then().assertThat().body("success", equalTo(true));
     }
 
-    @Step("Проверка, что код ответа равен 201 при создании нового пользователя")
+    @Step("Проверка, что код ответа равен 200 при создании нового пользователя")
     public static void checkStatusCodeWhenCreateNewUser(Response response) {
         response.then().statusCode(200);
     }
@@ -57,7 +59,7 @@ public class StepsToCreateUser {
                 .contentType(ContentType.JSON)
                 .body(bodyOfCreateUser)
                 .when()
-                .post("/api/auth/register");
+                .post(createUserURL);
         response.then().statusCode(200)
                 .and()
                 .assertThat().body("success", equalTo(true));

@@ -13,7 +13,9 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class StepsToCreateOrder {
 
-    @Step("Создание заказа")
+    static String createOrderURL = "/api/orders";
+
+    @Step("Создание заказа с авторизацией")
     public static Response createOrderWithAuthorization(List<String> ingredients, String bearerToken) {
         BodyOfCreateOrder bodyOfCreateOrder = new BodyOfCreateOrder(ingredients);
         return given()
@@ -22,7 +24,7 @@ public class StepsToCreateOrder {
                 .oauth2(bearerToken.substring(7))
                 .body(bodyOfCreateOrder)
                 .when()
-                .post("/api/orders");
+                .post(createOrderURL);
     }
 
     @Step("Создание заказа")
@@ -32,7 +34,7 @@ public class StepsToCreateOrder {
                 .contentType(ContentType.JSON)
                 .body(bodyOfCreateOrder)
                 .when()
-                .post("/api/orders");
+                .post(createOrderURL);
     }
 
     @Step("Проверка, что 'order' не равен null в ответе при создании заказа")
@@ -40,12 +42,12 @@ public class StepsToCreateOrder {
         response.then().assertThat().body("order", notNullValue());
     }
 
-    @Step("Проверка, что 'order' не равен null в ответе при создании заказа")
+    @Step("Проверка, что 'order' не равен null в ответе при создании заказа с авторизацией")
     public static void checkResponseWhenCreateOrderWithIngredientsAndAuthorization(Response response) {
         response.then().assertThat().body("order.owner", notNullValue());
     }
 
-    @Step("Проверка, что код ответа равен 201 при создании заказа")
+    @Step("Проверка, что код ответа равен 200 при создании заказа")
     public static void checkStatusCodeWhenCreateOrderWithIngredients(Response response) {
         response.then().statusCode(200);
     }
@@ -59,21 +61,6 @@ public class StepsToCreateOrder {
     public static void checkStatusCodeWhenCreateOrderWithoutIngredients(Response response) {
         response.then().statusCode(400);
     }
-
-//    @Step
-//    public static void checkResponseWhenCreateOrderWithoutAuthorization(Response response) {
-//        response.then().assertThat().body();
-//    }
-//
-//    @Step
-//    public static void checkStatusCodeWhenCreateOrderWithoutAuthorization(Response response) {
-//        response.then().statusCode();
-//    }
-//
-//    @Step
-//    public static void checkResponseWhenCreateOrderWithWrongHashOfIngredients(Response response) {
-//        response.then().assertThat().body();
-//    }
 
     @Step("Проверка, что код ответа равен 500 при попытке создать заказ с неверным хешем ингредиента")
     public static void checkStatusCodeWhenCreateOrderWithWrongHashOfIngredients(Response response) {

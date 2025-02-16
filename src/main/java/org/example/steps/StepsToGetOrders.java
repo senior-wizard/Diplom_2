@@ -9,6 +9,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 
 public class StepsToGetOrders {
 
+    static String getOrderListURL = "/api/orders";
+
     @Step("Получение списка заказов конкретного пользователя")
     public static Response getOrderListWithAuthorization(String bearerToken) {
         return given()
@@ -16,7 +18,7 @@ public class StepsToGetOrders {
                 .auth()
                 .oauth2(bearerToken.substring(7))
                 .when()
-                .get("/api/orders");
+                .get(getOrderListURL);
     }
 
     @Step("Проверка, что 'success' равен true в ответе при получении списка заказов конкретного пользователя")
@@ -29,12 +31,12 @@ public class StepsToGetOrders {
         response.then().statusCode(200);
     }
 
-    @Step("Получение списка заказов конкретного пользователя")
+    @Step("Получение списка заказов")
     public static Response cantGetOrderListWithoutAuthorization() {
         return given()
                 .contentType(ContentType.JSON)
                 .when()
-                .get("/api/orders");
+                .get(getOrderListURL);
     }
 
     @Step("Проверка, что 'message' равен 'You should be authorised' в коде ответа при попытке получить список заказов конкретного пользователя без авторизации")

@@ -10,16 +10,19 @@ import static org.hamcrest.CoreMatchers.equalTo;
 
 public class StepsToUpdateUserInformation {
 
+    static String updateUserInformationURL = "/api/auth/user";
+
     @Step("Изменение данных пользователя")
-    public static Response updateUserInformation(String email, String name, String bearerToken) {
-        BodyOfUpdateUserInformation bodyOfUpdateUserInformation = new BodyOfUpdateUserInformation(email, name);
+    public static Response updateUserInformation(String email, String name, String password, String bearerToken) {
+        BodyOfUpdateUserInformation bodyOfUpdateUserInformation = new BodyOfUpdateUserInformation(email, name, password);
         return given()
                 .contentType(ContentType.JSON)
                 .auth()
                 .oauth2(bearerToken.substring(7))
                 .body(bodyOfUpdateUserInformation)
                 .when()
-                .patch("/api/auth/user");
+                .patch(updateUserInformationURL);
+
     }
 
     @Step("Проверка, что email изменился на заданное значение в ответе при изменении данных пользователя")
@@ -38,13 +41,13 @@ public class StepsToUpdateUserInformation {
     }
 
     @Step("Данные не изменяются без авторизации")
-    public static Response cantUpdateUserInformationWithoutAuthorization(String email, String name) {
-        BodyOfUpdateUserInformation bodyOfUpdateUserInformation = new BodyOfUpdateUserInformation(email, name);
+    public static Response cantUpdateUserInformationWithoutAuthorization(String email, String name, String password) {
+        BodyOfUpdateUserInformation bodyOfUpdateUserInformation = new BodyOfUpdateUserInformation(email, name, password);
         return given()
                 .contentType(ContentType.JSON)
                 .body(bodyOfUpdateUserInformation)
                 .when()
-                .patch("/api/auth/user");
+                .patch(updateUserInformationURL);
     }
 
     @Step("Проверка, что 'success' равен false в ответе при попытке изменить данные пользователя, будучи неавторизованным")

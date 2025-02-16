@@ -9,6 +9,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 
 public class StepsToDeleteUser {
 
+    static String deleteUserURL = "/api/auth/user";
+
     @Step("Удаление пользователя и все нужные проверки в 1 шаг")
     public static void deleteUser(String bearerToken) {
         Response response = given()
@@ -16,10 +18,9 @@ public class StepsToDeleteUser {
                 .auth()
                 .oauth2(bearerToken.substring(7))
                 .when()
-                .delete("/api/auth/user");
+                .delete(deleteUserURL);
         response.then().statusCode(202)
                 .and()
                 .assertThat().body("message", equalTo("User successfully removed"));
-
     }
 }
