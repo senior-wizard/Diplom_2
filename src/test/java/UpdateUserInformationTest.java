@@ -25,23 +25,23 @@ public class UpdateUserInformationTest {
     }
 
     @Test
-    @DisplayName("Обновление информации пользователя с авторизацией")
+    @DisplayName("Обновление email пользователя с авторизацией")
     @Description("Проверка, что при обновлении email и логина пользователя код ответа равен 200 и что email и логин изменили значения в ответе")
-    public void updateUserInformationTest() {
+    public void updateUserEmailTest() {
         StepsToCreateUser.createUserInOneStep(email, password, name);
-        Response response = StepsToUpdateUserInformation.updateUserInformation(changedEmail, changedName, password, StepsToLoginUser.loginUserInOneStep(email, password));
+        Response response = StepsToUpdateUserInformation.updateUserInformation(changedEmail, name, StepsToLoginUser.loginUserInOneStep(email, password));
         StepsToUpdateUserInformation.checkStatusCodeWhenUpdateUserInformation(response);
         StepsToUpdateUserInformation.checkResponseEmailWhenUpdateUserInformation(response, changedEmail);
-        StepsToUpdateUserInformation.checkResponseNameWhenUpdateUserInformation(response,changedName);
     }
 
     @Test
-    @DisplayName("Обновление пароля пользователя с авторизацией")
-    @Description("Проверка, что при обновлении пароля пользователя код ответа равен 200 и что пользователя можно удалить с новым паролем")
-    public void updateUserPasswordTest() {
+    @DisplayName("Обновление имени пользователя с авторизацией")
+    @Description("Проверка, что при обновлении email и логина пользователя код ответа равен 200 и что email и логин изменили значения в ответе")
+    public void updateUserLoginTest() {
         StepsToCreateUser.createUserInOneStep(email, password, name);
-        Response response = StepsToUpdateUserInformation.updateUserInformation(email, name, changedPassword, StepsToLoginUser.loginUserInOneStep(email, password));
+        Response response = StepsToUpdateUserInformation.updateUserInformation(email, changedName, StepsToLoginUser.loginUserInOneStep(email, password));
         StepsToUpdateUserInformation.checkStatusCodeWhenUpdateUserInformation(response);
+        StepsToUpdateUserInformation.checkResponseNameWhenUpdateUserInformation(response,changedName);
     }
 
     @Test

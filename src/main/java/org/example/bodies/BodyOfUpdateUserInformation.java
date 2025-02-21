@@ -8,6 +8,5 @@ import lombok.Data;
 public class BodyOfUpdateUserInformation {
     private String email;
     private String name;
-    private String password;
 }
 

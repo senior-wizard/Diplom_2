@@ -13,8 +13,8 @@ public class StepsToUpdateUserInformation {
     static String updateUserInformationURL = "/api/auth/user";
 
     @Step("Изменение данных пользователя")
-    public static Response updateUserInformation(String email, String name, String password, String bearerToken) {
-        BodyOfUpdateUserInformation bodyOfUpdateUserInformation = new BodyOfUpdateUserInformation(email, name, password);
+    public static Response updateUserInformation(String email, String name, String bearerToken) {
+        BodyOfUpdateUserInformation bodyOfUpdateUserInformation = new BodyOfUpdateUserInformation(email, name);
         return given()
                 .contentType(ContentType.JSON)
                 .auth()
@@ -42,7 +42,7 @@ public class StepsToUpdateUserInformation {
 
     @Step("Данные не изменяются без авторизации")
     public static Response cantUpdateUserInformationWithoutAuthorization(String email, String name, String password) {
-        BodyOfUpdateUserInformation bodyOfUpdateUserInformation = new BodyOfUpdateUserInformation(email, name, password);
+        BodyOfUpdateUserInformation bodyOfUpdateUserInformation = new BodyOfUpdateUserInformation(email, name);
         return given()
                 .contentType(ContentType.JSON)
                 .body(bodyOfUpdateUserInformation)
